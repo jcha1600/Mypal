@@ -12,10 +12,18 @@
 #undef HAVE_DIRENT_H
 #undef HAVE_UNISTD_H
 #endif
+#if defined(_MSC_VER)
 #if defined(HAVE_64BIT_BUILD)
 #include "config_win64.h"
 #else
 #include "config_win32.h"
+#endif
+#else
+#if defined(HAVE_64BIT_BUILD)
+#include "config_mingw64.h"
+#else
+#include "config_mingw32.h"
+#endif
 #endif
 // Adjust configure defines for GCC
 #if !defined(_MSC_VER)
