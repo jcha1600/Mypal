@@ -20,12 +20,19 @@
 #elif (defined(WEBRTC_ARCH_X86) && defined(WIN32))
 static __inline long int WebRtcIsac_lrint(double x_dbl) {
   long int x_int;
-
+#if defined(_MSC_VER)
   __asm {
     fld x_dbl
     fistp x_int
   };
-
+#else
+  __asm__ __volatile__(
+    "fistpl %0"  
+    : "=m" (x_int) 
+    : "t" (x_dbl) 
+    : "st"
+    );
+#endif
   return x_int;
 }
 #else // Do a slow but correct implementation of lrint
